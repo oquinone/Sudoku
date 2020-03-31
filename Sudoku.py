@@ -1,4 +1,3 @@
-import pygame
 
 class Sodoku():
     my_Board = [
@@ -68,7 +67,7 @@ def main():
             game.set_Board(x_Val, y_Val, num)
             game.print_Board()
         else:
-            print("Wrong! Loser!")
+            print("Wrong! Try Again..")
 
 if __name__ == "__main__":
     main()
