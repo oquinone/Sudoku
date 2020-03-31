@@ -1,9 +1,18 @@
 import pygame
 import Sudoku
+import pygame.freetype
+import math
+
 pygame.init()
 
 # Set up the drawing window
 screen = pygame.display.set_mode([780, 700])
+
+pygame.display.set_caption("Soduku Game!")
+
+# def text_objects(text, font):
+#     Textsurface = font.render(text, True, green)
+#     return Textsurface, Textsurface.get_rect()
 
 # Run until the user asks to quit
 running = True
@@ -17,18 +26,31 @@ while running:
     # Fill the background with white
     screen.fill((255, 255, 255))
 
-    # Draw a solid blue circle in the center
-    #pygame.draw.circle(screen, (0, 0, 255), (250, 250), 75)
+    #Variables needed to create black Sudoku Grid
     width = 75
     height = 75
     margin = 7
     black = (0,0,0)
     orange = (255, 165, 0)
+    green = (0, 255, 0)
     x = 50
     y = 10
+    font = pygame.font.SysFont('Arial', 35)
+
+    sudoku_Class = Sudoku.Sodoku()
+    partially_Filled_Board = sudoku_Class.get_Board()
+
+    #Creating Sudoku Grid
     for i in range (0, 9):
         for j in range(0,9):
-            pygame.draw.rect(screen, black, [x,y,width, height], 5)
+            pygame.draw.rect(screen, black, [x,y,width, height], 13)
+
+            if(partially_Filled_Board[i][j] != 0):
+                message = font.render(str(partially_Filled_Board[i][j]), True, black)
+                place = message.get_rect(center=(math.floor(x + width / 2), math.floor(y + height / 2)))
+                screen.blit(message, place)
+
+
             x += 75
         x = 50
         y += 75
