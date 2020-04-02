@@ -1,12 +1,22 @@
 import pygame
 import Sudoku
-import pygame.freetype
+#import pygame.freetype
 import math
+
+def click_On_Screen():
+    for key in pygame.event.get():
+        if key.type == pygame.MOUSEBUTTONDOWN:
+            mx, my = pygame.mouse.get_pos()
+            pygame.draw.rect(screen, red, [mx, my, width, height], 7)
+
+# def hover_Over_Button(x, y):
+#     mouse = pygame.mouse.get_pos()
+
 
 pygame.init()
 
 # Set up the drawing window
-screen = pygame.display.set_mode([780, 700])
+screen = pygame.display.set_mode([676, 680])
 
 pygame.display.set_caption("Soduku Game!")
 
@@ -27,14 +37,16 @@ while running:
     screen.fill((255, 255, 255))
 
     #Variables needed to create black Sudoku Grid
-    width = 75
-    height = 75
+    width = 75   
+    height = 75    
     margin = 7
     black = (0,0,0)
-    orange = (255, 165, 0)
+    orange = (255, 165, 0) 
     green = (0, 255, 0)
-    x = 50
-    y = 10
+    red = (200, 0, 0)
+    light_green = (0, 200, 0)
+    x = 0
+    y = 0
     font = pygame.font.SysFont('Arial', 35)
 
     sudoku_Class = Sudoku.Sodoku()
@@ -43,31 +55,61 @@ while running:
     #Creating Sudoku Grid
     for i in range (0, 9):
         for j in range(0,9):
-            pygame.draw.rect(screen, black, [x,y,width, height], 13)
+            grid = pygame.draw.rect(screen, black, [x,y,width, height], 12)
 
             if(partially_Filled_Board[i][j] != 0):
                 message = font.render(str(partially_Filled_Board[i][j]), True, black)
                 place = message.get_rect(center=(math.floor(x + width / 2), math.floor(y + height / 2)))
                 screen.blit(message, place)
+                # hover_Over_Button(x,y)
+            
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                #hold = screen.get_rect()
+                text = ""
+                mx, my = pygame.mouse.get_pos()
+                pos_X = 0 
+                pos_Y = 0
+                found_X = True
+                found_Y = False
+                while found_X:
+                    if(pos_X + 75 < mx):
+                        pos_X += 75
+                    else:
+                        found_X = False
+
+                while not found_Y:
+                    if(pos_Y + 75 < my):
+                        pos_Y += 75
+                    else:
+                        found_Y = True
+
+                img = font.render(text, True, red)
+                rectt = img.get_rect()
+                rectt.center = (pos_Y, pos_X)
+                #cursor = pygame.draw.rect(rectt.center, (3, height))
+                pygame.draw.rect(screen, green, [pos_X, pos_Y, width, height], 5)
 
 
             x += 75
-        x = 50
+        x = 0
         y += 75
+
+    # hover_Over_Button(grid)
+    
     
     # Vertical Orange Lines in the Center
-    pygame.draw.line(screen, orange, (274, 10), (274, 680), 8)
-    pygame.draw.line(screen, orange, (499, 10), (499, 680), 8)
+    pygame.draw.line(screen, orange, (225, 0), (225, 680), 11)
+    pygame.draw.line(screen, orange, (450, 0), (450, 680), 11)
 
     # Horizontal Orange Lines in the Center
-    pygame.draw.line(screen, orange, (48, 233), (727, 233), 8)
-    pygame.draw.line(screen, orange, (48, 458), (727, 458), 8)
+    pygame.draw.line(screen, orange, (0, 225), (680, 225), 11)
+    pygame.draw.line(screen, orange, (0, 450), (680, 450), 11)
 
     #Border Orange Lines
-    pygame.draw.line(screen, orange, (48, 10), (727, 10), 8)
-    pygame.draw.line(screen, orange, (48, 682), (727, 682), 8)
-    pygame.draw.line(screen, orange, (48, 10), (48, 682), 8)
-    pygame.draw.line(screen, orange, (725, 10), (725, 682), 8)
+    pygame.draw.line(screen, orange, (0, 0), (680, 0), 8)
+    pygame.draw.line(screen, orange, (0, 675), (680, 675), 11)
+    pygame.draw.line(screen, orange, (0, 0), (0, 680), 8)
+    pygame.draw.line(screen, orange, (675, 0), (675, 673), 11)
     
 
     # Flip the display
